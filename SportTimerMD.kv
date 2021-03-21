@@ -1,0 +1,173 @@
+NavigationLayout:
+    Manager:
+        id: manager
+        SetTime:
+            name: "settime"
+            id: SetTime
+            sets: sets
+            workMinutes: workMinutes
+            workSeconds: workSeconds
+            restMinutes: restMinutes
+            restSeconds: restSeconds
+
+            BoxLayout:
+                orientation: "vertical"
+                size_hint_y: .7
+                pos_hint: {"top": 1}
+
+                MDToolbar:
+                    title: "Sport Timer"
+                    elevation: 10
+                    left_action_items: [['menu', lambda x: nav_drawer.set_state("open")]]
+                
+                MDLabel:
+                    text: "Sets"
+                    halign: "center"
+                
+                BoxLayout:
+                    orientation: "horizontal"
+                    
+                    MDIconButton:
+                        icon: "arrow-left-drop-circle-outline"
+                        theme_text_color: "Custom"
+                        text_color: app.theme_cls.primary_color
+                        on_release: root.ids.SetTime.DecreaseNumberOfSets()
+
+                    MDTextField:
+                        id: sets
+                        mode: "rectangle"
+                        text: "0"
+
+                    MDIconButton:
+                        icon: "arrow-right-drop-circle-outline"
+                        theme_text_color: "Custom"
+                        text_color: app.theme_cls.primary_color
+                        on_release: root.ids.SetTime.IncreaseNumberOfSets()
+            
+                MDLabel:
+                    text: "Work"
+                    halign: "center"
+                
+                BoxLayout:
+                    orientation: "horizontal"
+                    
+                    MDIconButton:
+                        icon: "arrow-left-drop-circle-outline"
+                        theme_text_color: "Custom"
+                        text_color: app.theme_cls.primary_color
+                        on_release: root.ids.SetTime.DecreaseNumberOfWorkMinutes()
+
+                    MDTextField:
+                        id: workMinutes
+                        mode: "rectangle"
+                        text: "0"
+
+                    MDIconButton:
+                        icon: "arrow-right-drop-circle-outline"
+                        theme_text_color: "Custom"
+                        text_color: app.theme_cls.primary_color
+                        on_release: root.ids.SetTime.IncreaseNumberOfWorkMinutes()
+
+                    MDIconButton:
+                        icon: "arrow-left-drop-circle-outline"
+                        theme_text_color: "Custom"
+                        text_color: app.theme_cls.primary_color
+                        on_release: root.ids.SetTime.DecreaseNumberOfWorkSeconds()
+
+                    MDTextField:
+                        id: workSeconds
+                        mode: "rectangle"
+                        text: "0"
+
+                    MDIconButton:
+                        icon: "arrow-right-drop-circle-outline"
+                        theme_text_color: "Custom"
+                        text_color: app.theme_cls.primary_color
+                        on_release: root.ids.SetTime.IncreaseNumberOfWorkSeconds()
+
+                MDLabel:
+                    text: "Rest"
+                    halign: "center"
+
+                BoxLayout:
+                    orientation: "horizontal"
+                    
+                    MDIconButton:
+                        icon: "arrow-left-drop-circle-outline"
+                        theme_text_color: "Custom"
+                        text_color: app.theme_cls.primary_color
+                        on_release: root.ids.SetTime.DecreaseNumberOfRestMinutes()
+
+                    MDTextField:
+                        id: restMinutes
+                        mode: "rectangle"
+                        text: "0"
+
+                    MDIconButton:
+                        icon: "arrow-right-drop-circle-outline"
+                        theme_text_color: "Custom"
+                        text_color: app.theme_cls.primary_color
+                        on_release: root.ids.SetTime.IncreaseNumberOfRestMinutes()
+
+                    MDIconButton:
+                        icon: "arrow-left-drop-circle-outline"
+                        theme_text_color: "Custom"
+                        text_color: app.theme_cls.primary_color
+                        on_release: root.ids.SetTime.DecreaseNumberOfRestSeconds()
+
+                    MDTextField:
+                        id: restSeconds
+                        mode: "rectangle"
+                        text: "0"
+
+                    MDIconButton:
+                        icon: "arrow-right-drop-circle-outline"
+                        theme_text_color: "Custom"
+                        text_color: app.theme_cls.primary_color
+                        on_release: root.ids.SetTime.IncreaseNumberOfRestSeconds()
+
+            BoxLayout:
+                orientation: "vertical"
+
+                BoxLayout:
+                    orientation: "horizontal"
+
+                    MDFlatButton:
+                        text: "Reset"
+                        on_release: root.ids.SetTime.ResetPressed()
+
+                    MDFlatButton:
+                        text: "Add"
+                        on_release: root.ids.SetTime.AddPressed()
+
+                MDFlatButton:
+                    text: "Start"
+                    on_release: manager.current = "training"
+        Training:
+            id: Training
+            name: "training"
+
+            BoxLayout:
+                orientation: "vertical"
+
+                MDToolbar:
+                    title: "Training"
+                    elevation: 10
+                    left_action_items: [['menu', lambda x: nav_drawer.set_state("open")]]
+
+                MDLabel:
+                    text: root.ids.Training.names
+                
+                MDLabel:
+                    text: root.ids.Training.seconds
+
+    MDNavigationDrawer:
+        id: nav_drawer
+
+        BoxLayout:
+            orientation: "vertical"
+
+            ScrollView:
+                MDList:
+                    OneLineListItem:
+                        text: "Set Time"
