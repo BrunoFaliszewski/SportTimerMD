@@ -9,140 +9,173 @@ NavigationLayout:
             workSeconds: workSeconds
             restMinutes: restMinutes
             restSeconds: restSeconds
+            exerciseName: exerciseName
 
             BoxLayout:
                 orientation: "vertical"
-                size_hint_y: .7
-                pos_hint: {"top": 1}
 
                 MDToolbar:
                     title: "Sport Timer"
                     elevation: 10
                     left_action_items: [['menu', lambda x: nav_drawer.set_state("open")]]
                 
-                MDLabel:
-                    text: "Sets"
-                    halign: "center"
-                
-                BoxLayout:
-                    orientation: "horizontal"
+                ScrollView:
+                    GridLayout:
+                        cols: 1
+                        size_hint_y: None
+                        height: self.minimum_height
+
+                        MDTextField:
+                            id: Title
+                            mode: "fill"
+                            hint_text: "Title"
+                            size_hint_y: None
+                        
+                        MDTextField:
+                            id: exerciseName
+                            mode: "fill"
+                            hint_text: "Exercise Name"
+                            size_hint_x: .9
+                            size_hint_y: None
+                            pos_hint: {"center_x": .5}
+
+                        MDLabel:
+                            text: "Sets"
+                            halign: "center"
+                            size_hint_y: None
+                            height: self.texture_size[1]
+                        
+                        BoxLayout:
+                            orientation: "horizontal"
+                            size_hint_y: None
+                            
+                            MDIconButton:
+                                icon: "arrow-left-drop-circle-outline"
+                                theme_text_color: "Custom"
+                                text_color: app.theme_cls.primary_color
+                                on_release: root.ids.SetTime.DecreaseNumberOfSets()
+
+                            MDTextField:
+                                id: sets
+                                mode: "rectangle"
+                                text: "0"
+
+                            MDIconButton:
+                                icon: "arrow-right-drop-circle-outline"
+                                theme_text_color: "Custom"
+                                text_color: app.theme_cls.primary_color
+                                on_release: root.ids.SetTime.IncreaseNumberOfSets()
                     
-                    MDIconButton:
-                        icon: "arrow-left-drop-circle-outline"
-                        theme_text_color: "Custom"
-                        text_color: app.theme_cls.primary_color
-                        on_release: root.ids.SetTime.DecreaseNumberOfSets()
+                        MDLabel:
+                            text: "Work"
+                            halign: "center"
+                            size_hint_y: None
+                            height: self.texture_size[1]
+                        
+                        BoxLayout:
+                            orientation: "horizontal"
+                            size_hint_y: None
+                            
+                            MDIconButton:
+                                icon: "arrow-left-drop-circle-outline"
+                                theme_text_color: "Custom"
+                                text_color: app.theme_cls.primary_color
+                                on_release: root.ids.SetTime.DecreaseNumberOfWorkMinutes()
 
-                    MDTextField:
-                        id: sets
-                        mode: "rectangle"
-                        text: "0"
+                            MDTextField:
+                                id: workMinutes
+                                mode: "rectangle"
+                                text: "0"
 
-                    MDIconButton:
-                        icon: "arrow-right-drop-circle-outline"
-                        theme_text_color: "Custom"
-                        text_color: app.theme_cls.primary_color
-                        on_release: root.ids.SetTime.IncreaseNumberOfSets()
-            
-                MDLabel:
-                    text: "Work"
-                    halign: "center"
-                
-                BoxLayout:
-                    orientation: "horizontal"
-                    
-                    MDIconButton:
-                        icon: "arrow-left-drop-circle-outline"
-                        theme_text_color: "Custom"
-                        text_color: app.theme_cls.primary_color
-                        on_release: root.ids.SetTime.DecreaseNumberOfWorkMinutes()
+                            MDIconButton:
+                                icon: "arrow-right-drop-circle-outline"
+                                theme_text_color: "Custom"
+                                text_color: app.theme_cls.primary_color
+                                on_release: root.ids.SetTime.IncreaseNumberOfWorkMinutes()
 
-                    MDTextField:
-                        id: workMinutes
-                        mode: "rectangle"
-                        text: "0"
+                            MDIconButton:
+                                icon: "arrow-left-drop-circle-outline"
+                                theme_text_color: "Custom"
+                                text_color: app.theme_cls.primary_color
+                                on_release: root.ids.SetTime.DecreaseNumberOfWorkSeconds()
 
-                    MDIconButton:
-                        icon: "arrow-right-drop-circle-outline"
-                        theme_text_color: "Custom"
-                        text_color: app.theme_cls.primary_color
-                        on_release: root.ids.SetTime.IncreaseNumberOfWorkMinutes()
+                            MDTextField:
+                                id: workSeconds
+                                mode: "rectangle"
+                                text: "0"
 
-                    MDIconButton:
-                        icon: "arrow-left-drop-circle-outline"
-                        theme_text_color: "Custom"
-                        text_color: app.theme_cls.primary_color
-                        on_release: root.ids.SetTime.DecreaseNumberOfWorkSeconds()
+                            MDIconButton:
+                                icon: "arrow-right-drop-circle-outline"
+                                theme_text_color: "Custom"
+                                text_color: app.theme_cls.primary_color
+                                on_release: root.ids.SetTime.IncreaseNumberOfWorkSeconds()
 
-                    MDTextField:
-                        id: workSeconds
-                        mode: "rectangle"
-                        text: "0"
+                        MDLabel:
+                            text: "Rest"
+                            halign: "center"
+                            size_hint_y: None
+                            height: self.texture_size[1]
 
-                    MDIconButton:
-                        icon: "arrow-right-drop-circle-outline"
-                        theme_text_color: "Custom"
-                        text_color: app.theme_cls.primary_color
-                        on_release: root.ids.SetTime.IncreaseNumberOfWorkSeconds()
+                        BoxLayout:
+                            orientation: "horizontal"
+                            size_hint_y: None
+                            
+                            MDIconButton:
+                                icon: "arrow-left-drop-circle-outline"
+                                theme_text_color: "Custom"
+                                text_color: app.theme_cls.primary_color
+                                on_release: root.ids.SetTime.DecreaseNumberOfRestMinutes()
 
-                MDLabel:
-                    text: "Rest"
-                    halign: "center"
+                            MDTextField:
+                                id: restMinutes
+                                mode: "rectangle"
+                                text: "0"
 
-                BoxLayout:
-                    orientation: "horizontal"
-                    
-                    MDIconButton:
-                        icon: "arrow-left-drop-circle-outline"
-                        theme_text_color: "Custom"
-                        text_color: app.theme_cls.primary_color
-                        on_release: root.ids.SetTime.DecreaseNumberOfRestMinutes()
+                            MDIconButton:
+                                icon: "arrow-right-drop-circle-outline"
+                                theme_text_color: "Custom"
+                                text_color: app.theme_cls.primary_color
+                                on_release: root.ids.SetTime.IncreaseNumberOfRestMinutes()
 
-                    MDTextField:
-                        id: restMinutes
-                        mode: "rectangle"
-                        text: "0"
+                            MDIconButton:
+                                icon: "arrow-left-drop-circle-outline"
+                                theme_text_color: "Custom"
+                                text_color: app.theme_cls.primary_color
+                                on_release: root.ids.SetTime.DecreaseNumberOfRestSeconds()
 
-                    MDIconButton:
-                        icon: "arrow-right-drop-circle-outline"
-                        theme_text_color: "Custom"
-                        text_color: app.theme_cls.primary_color
-                        on_release: root.ids.SetTime.IncreaseNumberOfRestMinutes()
+                            MDTextField:
+                                id: restSeconds
+                                mode: "rectangle"
+                                text: "0"
 
-                    MDIconButton:
-                        icon: "arrow-left-drop-circle-outline"
-                        theme_text_color: "Custom"
-                        text_color: app.theme_cls.primary_color
-                        on_release: root.ids.SetTime.DecreaseNumberOfRestSeconds()
+                            MDIconButton:
+                                icon: "arrow-right-drop-circle-outline"
+                                theme_text_color: "Custom"
+                                text_color: app.theme_cls.primary_color
+                                on_release: root.ids.SetTime.IncreaseNumberOfRestSeconds()
 
-                    MDTextField:
-                        id: restSeconds
-                        mode: "rectangle"
-                        text: "0"
+                        BoxLayout:
+                            orientation: "horizontal"
+                            size_hint_y: None
 
-                    MDIconButton:
-                        icon: "arrow-right-drop-circle-outline"
-                        theme_text_color: "Custom"
-                        text_color: app.theme_cls.primary_color
-                        on_release: root.ids.SetTime.IncreaseNumberOfRestSeconds()
+                            MDFlatButton:
+                                text: "Save"
+                                on_release: root.ids.SetTime.SavePressed()
 
-            BoxLayout:
-                orientation: "vertical"
+                            MDFlatButton:
+                                text: "Reset"
+                                on_release: root.ids.SetTime.ResetPressed()
 
-                BoxLayout:
-                    orientation: "horizontal"
+                            MDFlatButton:
+                                text: "Add"
+                                on_release: root.ids.SetTime.AddPressed()
 
-                    MDFlatButton:
-                        text: "Reset"
-                        on_release: root.ids.SetTime.ResetPressed()
-
-                    MDFlatButton:
-                        text: "Add"
-                        on_release: root.ids.SetTime.AddPressed()
-
-                MDFlatButton:
-                    text: "Start"
-                    on_release: manager.current = "training"
+                        MDFlatButton:
+                            text: "Start"
+                            on_release:
+                                manager.current = "training"
+                                manager.transition.direction = "left"
+                            size_hint_y: None
         Training:
             id: Training
             name: "training"
@@ -160,6 +193,10 @@ NavigationLayout:
                 
                 MDLabel:
                     text: root.ids.Training.seconds
+        
+        MySets:
+            id: MySets
+            name: "mysets"
 
     MDNavigationDrawer:
         id: nav_drawer
@@ -171,3 +208,14 @@ NavigationLayout:
                 MDList:
                     OneLineListItem:
                         text: "Set Time"
+                        on_release:
+                            manager.current = "settime"
+                            manager.transition.direction = "right"
+                            root.ids.Training.BackPressed()
+                    
+                    OneLineListItem:
+                        text: "My Sets"
+                        on_release:
+                            manager.current = "mysets"
+                            manager.transition.direction = "right"
+                            root.ids.Training.BackPressed()

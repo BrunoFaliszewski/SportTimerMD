@@ -4,6 +4,7 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.clock import Clock
 from kivy.core.audio import SoundLoader
 
+from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import ObjectProperty, StringProperty
 
 Times = [5, 4, 3, 2, 1]
@@ -18,67 +19,101 @@ class SetTime(Screen):
     workSeconds = ObjectProperty(None)
     restMinutes = ObjectProperty(None)
     restSeconds = ObjectProperty(None)
+    exerciseName = ObjectProperty(None)
 
     def IncreaseNumberOfSets(self):
-        if self.sets.text != "100":
-            self.sets.text = str(int(self.sets.text) + 1)
-        else:
-            self.sets.text = "0"
+        try:
+            if self.sets.text != "100":
+                self.sets.text = str(int(self.sets.text) + 1)
+            else:
+                self.sets.text = "0"
+        except:
+            pass
     
     def DecreaseNumberOfSets(self):
-        if self.sets.text != "0":
-            self.sets.text = str(int(self.sets.text) - 1)
-        else:
-            self.sets.text = "100"
+        try:
+            if self.sets.text != "0":
+                self.sets.text = str(int(self.sets.text) - 1)
+            else:
+                self.sets.text = "100"
+        except:
+            pass
     
     def IncreaseNumberOfWorkMinutes(self):
-        if self.workMinutes.text != "100":
-            self.workMinutes.text = str(int(self.workMinutes.text) + 1)
-        else:
-            self.workMinutes.text = "0"
+        try:
+            if self.workMinutes.text != "100":
+                self.workMinutes.text = str(int(self.workMinutes.text) + 1)
+            else:
+                self.workMinutes.text = "0"
+        except:
+            pass
     
     def DecreaseNumberOfWorkMinutes(self):
-        if self.workMinutes.text != "0":
-            self.workMinutes.text = str(int(self.workMinutes.text) - 1)
-        else:
-            self.workMinutes.text = "100"
+        try:
+            if self.workMinutes.text != "0":
+                self.workMinutes.text = str(int(self.workMinutes.text) - 1)
+            else:
+                self.workMinutes.text = "100"
+        except:
+            pass
     
     def IncreaseNumberOfWorkSeconds(self):
-        if self.workSeconds.text != "60":
-            self.workSeconds.text = str(int(self.workSeconds.text) + 1)
-        else:
-            self.workSeconds.text = "0"
+        try:
+            if self.workSeconds.text != "60":
+                self.workSeconds.text = str(int(self.workSeconds.text) + 1)
+            else:
+                self.workSeconds.text = "0"
+        except:
+            pass
     
     def DecreaseNumberOfWorkSeconds(self):
-        if self.workSeconds.text != "0":
-            self.workSeconds.text = str(int(self.workSeconds.text) - 1)
-        else:
-            self.workSeconds.text = "60"
+        try:
+            if self.workSeconds.text != "0":
+                self.workSeconds.text = str(int(self.workSeconds.text) - 1)
+            else:
+                self.workSeconds.text = "60"
+        except:
+            pass
     
     def IncreaseNumberOfRestMinutes(self):
-        if self.restMinutes.text != "100":
-            self.restMinutes.text = str(int(self.restMinutes.text) + 1)
-        else:
-            self.restMinutes.text = "0"
+        try:
+            if self.restMinutes.text != "100":
+                self.restMinutes.text = str(int(self.restMinutes.text) + 1)
+            else:
+                self.restMinutes.text = "0"
+        except:
+            pass
     
     def DecreaseNumberOfRestMinutes(self):
-        if self.restMinutes.text != "0":
-            self.restMinutes.text = str(int(self.restMinutes.text) - 1)
-        else:
-            self.restMinutes.text = "100"
+        try:
+            if self.restMinutes.text != "0":
+                self.restMinutes.text = str(int(self.restMinutes.text) - 1)
+            else:
+                self.restMinutes.text = "100"
+        except:
+            pass
     
     def IncreaseNumberOfRestSeconds(self):
-        if self.restSeconds.text != "60":
-            self.restSeconds.text = str(int(self.restSeconds.text) + 1)
-        else:
-            self.restSeconds.text = "0"
+        try:
+            if self.restSeconds.text != "60":
+                self.restSeconds.text = str(int(self.restSeconds.text) + 1)
+            else:
+                self.restSeconds.text = "0"
+        except:
+            pass
     
     def DecreaseNumberOfRestSeconds(self):
-        if self.restSeconds.text != "0":
-            self.restSeconds.text = str(int(self.restSeconds.text) - 1)
-        else:
-            self.restSeconds.text = "60"
+        try:
+            if self.restSeconds.text != "0":
+                self.restSeconds.text = str(int(self.restSeconds.text) - 1)
+            else:
+                self.restSeconds.text = "60"
+        except:
+            pass
     
+    def SavePressed(self):
+        pass
+
     def ResetPressed(self):
         global Times, Names
         Times = [5, 4, 3, 2, 1]
@@ -94,7 +129,10 @@ class SetTime(Screen):
                     if int(self.workMinutes.text) * 60 + int(self.workSeconds.text) > 0:
                         Times.append(int(self.workMinutes.text) * 60 + int(self.workSeconds.text) - j)
                 if int(self.workMinutes.text) * 60 + int(self.workSeconds.text) > 0:
-                    Names.append("Work")
+                    if self.exerciseName.text != "":
+                        Names.append(self.exerciseName.text)
+                    else:
+                        Names.append("Work")
                 for j in range(int(self.restMinutes.text) * 60 + int(self.restSeconds.text)):
                     if int(self.restMinutes.text) * 60 + int(self.restSeconds.text) > 0:
                         Times.append(int(self.restMinutes.text) * 60 + int(self.restSeconds.text) - j)
@@ -122,11 +160,11 @@ class Training(Screen):
         if self.secondsnum < len(Times):
             self.seconds = str(Times[self.secondsnum])
             self.names = Names[self.namesnum]
-            if self.names == "Work":
+            if self.names != "Rest":
                 if self.isFirst == True:
                     self.workSound.play()
                     self.isFirst = False
-            elif self.names == "Rest":
+            else:
                 if self.isFirst == True:
                     self.restSound.play()
                     self.isFirst = False
@@ -145,9 +183,15 @@ class Training(Screen):
                 self.finishSound.play()
                 self.isFirst = False
             self.names = ""
-    
+            
     def BackPressed(self):
-        Clock.unschedule(self.schedule)
+        try:
+            Clock.unschedule(self.schedule)
+        except:
+            pass
+
+class MySets(Screen):
+    pass
 
 class SportTimerMD(MDApp):
     def build(self):
