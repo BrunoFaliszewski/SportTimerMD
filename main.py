@@ -175,6 +175,10 @@ class Training(Screen):
         self.secondsnum = 0
         self.namesnum = 0
         self.schedule = Clock.schedule_interval(self.updatelabel, 1)
+
+    def on_leave(self):
+        Clock.unschedule(self.schedule)
+
     def updatelabel(self, dt):
         global Times, Names
         if self.secondsnum < len(Times):
@@ -205,7 +209,7 @@ class Training(Screen):
             self.names = ""
             
     def BackPressed(self):
-        Clock.unschedule(self.schedule)
+        pass
 
 class MySets(Screen):
     pass
