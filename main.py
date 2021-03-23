@@ -205,10 +205,7 @@ class Training(Screen):
             self.names = ""
             
     def BackPressed(self):
-        try:
-            Clock.unschedule(self.schedule)
-        except:
-            pass
+        Clock.unschedule(self.schedule)
 
 class MySets(Screen):
     pass
