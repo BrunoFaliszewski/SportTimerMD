@@ -4,11 +4,27 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.clock import Clock
 from kivy.core.audio import SoundLoader
 
+from glob import glob
+from os import listdir
+from os.path import isfile, join
+import os
+import shutil
+
 from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import ObjectProperty, StringProperty
+from kivymd.uix.list import OneLineListItem
 
 Times = [5, 4, 3, 2, 1]
 Names = ["Start"]
+
+try:
+    os.mkdir('Sets')
+except FileExistsError:
+    pass
+Sets = glob(os.path.join('Sets', "*", ""))
+for i in range(len(Sets)):
+    Sets[i] = Sets[i].replace('Sets', '')
+    Sets[i] = Sets[i].replace('/', '')
 
 class Manager(ScreenManager):
     pass
@@ -20,6 +36,7 @@ class SetTime(Screen):
     restMinutes = ObjectProperty(None)
     restSeconds = ObjectProperty(None)
     exerciseName = ObjectProperty(None)
+    setName = ObjectProperty(None)
 
     def IncreaseNumberOfSets(self):
         try:
@@ -132,8 +149,22 @@ class SetTime(Screen):
             pass
     
     def SavePressed(self):
-        pass
-
+        global Sets, Times, Names
+        try:
+            Sets.append(self.setName.text)
+            os.mkdir(f'Sets/{self.setName.text}')
+            with open(f'Sets/{self.setName.text}/{self.setName.text}.txt', 'w') as self.file:
+                for i in range(len(Times)):
+                    self.file.write(f'{Times[i]}\n')
+            with open(f'Sets/{self.setName.text}/{self.setName.text}names.txt', 'w') as self.file:
+                for i in range(len(Names)):
+                    self.file.write(f'{Names[i]}\n')
+            with open(f'Sets/{self.setName.text}/{self.setName.text}trainingtext.txt', 'w') as self.file:
+                self.file.write("TrainingText")
+        except FileExistsError:
+            self.setName.text = "There already is that set"
+        print(Sets)
+        
     def ResetPressed(self):
         global Times, Names
         Times = [5, 4, 3, 2, 1]
@@ -213,7 +244,12 @@ class Training(Screen):
         pass
 
 class MySets(Screen):
-    pass
+    setsList = ObjectProperty(None)
+
+    def on_enter(self):
+        global Sets
+        for i in range(len(Sets)):
+            self.setsList.add_widget(OneLineListItem(text=f"{Sets[i]}"))
 
 class SportTimerMD(MDApp):
     def build(self):

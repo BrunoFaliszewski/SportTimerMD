@@ -10,6 +10,7 @@ NavigationLayout:
             restMinutes: restMinutes
             restSeconds: restSeconds
             exerciseName: exerciseName
+            setName: setName
 
             BoxLayout:
                 orientation: "vertical"
@@ -43,7 +44,6 @@ NavigationLayout:
                             text: "Sets"
                             halign: "center"
                             size_hint_y: None
-                            size: self.width, 100
                             height: self.texture_size[1]
                         
                         BoxLayout:
@@ -71,7 +71,6 @@ NavigationLayout:
                             text: "Work"
                             halign: "center"
                             size_hint_y: None
-                            size: self.width, 100
                             height: self.texture_size[1]
                         
                         BoxLayout:
@@ -116,7 +115,6 @@ NavigationLayout:
                             text: "Rest"
                             halign: "center"
                             size_hint_y: None
-                            size: self.width, 100
                             height: self.texture_size[1]
 
                         BoxLayout:
@@ -200,6 +198,20 @@ NavigationLayout:
         MySets:
             id: MySets
             name: "mysets"
+
+            setsList: setsList
+
+            BoxLayout:
+                orientation: "vertical"
+
+                MDToolbar:
+                    title: "My Sets"
+                    elevation: 10
+                    left_action_items: [['menu', lambda x: nav_drawer.set_state("open")]]
+
+                ScrollView:
+                    MDList:
+                        id: setsList
 
     MDNavigationDrawer:
         id: nav_drawer
