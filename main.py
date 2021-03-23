@@ -27,7 +27,9 @@ class SetTime(Screen):
                 self.sets.text = str(int(self.sets.text) + 1)
             else:
                 self.sets.text = "0"
-        except:
+        except ValueError:
+            self.sets.text = "0"
+        finally:
             pass
     
     def DecreaseNumberOfSets(self):
@@ -36,7 +38,9 @@ class SetTime(Screen):
                 self.sets.text = str(int(self.sets.text) - 1)
             else:
                 self.sets.text = "100"
-        except:
+        except ValueError:
+            self.sets.text = "0"
+        finally:
             pass
     
     def IncreaseNumberOfWorkMinutes(self):
@@ -45,7 +49,9 @@ class SetTime(Screen):
                 self.workMinutes.text = str(int(self.workMinutes.text) + 1)
             else:
                 self.workMinutes.text = "0"
-        except:
+        except ValueError:
+            self.workMinutes.text = "0"
+        finally:
             pass
     
     def DecreaseNumberOfWorkMinutes(self):
@@ -54,7 +60,9 @@ class SetTime(Screen):
                 self.workMinutes.text = str(int(self.workMinutes.text) - 1)
             else:
                 self.workMinutes.text = "100"
-        except:
+        except ValueError:
+            self.workMinutes.text = "0"
+        finally:
             pass
     
     def IncreaseNumberOfWorkSeconds(self):
@@ -63,7 +71,9 @@ class SetTime(Screen):
                 self.workSeconds.text = str(int(self.workSeconds.text) + 1)
             else:
                 self.workSeconds.text = "0"
-        except:
+        except ValueError:
+            self.workSeconds.text = "0"
+        finally:
             pass
     
     def DecreaseNumberOfWorkSeconds(self):
@@ -72,7 +82,9 @@ class SetTime(Screen):
                 self.workSeconds.text = str(int(self.workSeconds.text) - 1)
             else:
                 self.workSeconds.text = "60"
-        except:
+        except ValueError:
+            self.workSeconds.text = "0"
+        finally:
             pass
     
     def IncreaseNumberOfRestMinutes(self):
@@ -81,7 +93,9 @@ class SetTime(Screen):
                 self.restMinutes.text = str(int(self.restMinutes.text) + 1)
             else:
                 self.restMinutes.text = "0"
-        except:
+        except ValueError:
+            self.restMinutes.text = "0"
+        finally:
             pass
     
     def DecreaseNumberOfRestMinutes(self):
@@ -90,7 +104,9 @@ class SetTime(Screen):
                 self.restMinutes.text = str(int(self.restMinutes.text) - 1)
             else:
                 self.restMinutes.text = "100"
-        except:
+        except ValueError:
+            self.restMinutes.text = "0"
+        finally:
             pass
     
     def IncreaseNumberOfRestSeconds(self):
@@ -99,7 +115,9 @@ class SetTime(Screen):
                 self.restSeconds.text = str(int(self.restSeconds.text) + 1)
             else:
                 self.restSeconds.text = "0"
-        except:
+        except ValueError:
+            self.restSeconds.text = "0"
+        finally:
             pass
     
     def DecreaseNumberOfRestSeconds(self):
@@ -108,7 +126,9 @@ class SetTime(Screen):
                 self.restSeconds.text = str(int(self.restSeconds.text) - 1)
             else:
                 self.restSeconds.text = "60"
-        except:
+        except ValueError:
+            self.restSeconds.text = "0"
+        finally:
             pass
     
     def SavePressed(self):
