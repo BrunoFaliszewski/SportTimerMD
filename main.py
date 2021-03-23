@@ -151,6 +151,7 @@ class SetTime(Screen):
                 if int(self.workMinutes.text) * 60 + int(self.workSeconds.text) > 0:
                     if self.exerciseName.text != "":
                         Names.append(self.exerciseName.text)
+                        self.exerciseName.text = ""
                     else:
                         Names.append("Work")
                 for j in range(int(self.restMinutes.text) * 60 + int(self.restSeconds.text)):
