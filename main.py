@@ -258,7 +258,14 @@ class MySets(Screen):
     def AddNewSets(self, dt):
         global NewSets
         for i in range(len(NewSets)):
-            self.setsList.add_widget(OneLineListItem(text=f"{NewSets[i]}"))
+            self.setsList.add_widget(
+                MDExpansionPanel(
+                    content=ExpansionPanelContent(),
+                    panel_cls=MDExpansionPanelOneLine(
+                        text=f"{NewSets[i]}"
+                    )
+                )
+            )
         NewSets = []
 
     def MakeSetsList(self, dt):
