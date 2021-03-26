@@ -177,6 +177,11 @@ NavigationLayout:
                                 manager.current = "training"
                                 manager.transition.direction = "left"
                             size_hint_y: None
+                        
+                        MDLabel:
+                            text: root.ids.SetTime.timesLabel
+                            size_hint_y: None
+                            height: self.texture_size[1]
         Training:
             id: Training
             name: "training"
@@ -234,10 +239,17 @@ NavigationLayout:
                             manager.transition.direction = "right"
 
 <ExpansionPanelContent>
-    adapptive_height: True
+    rows: 1
+
+    MDLabel:
+        text: root.trainingText
 
     MDIconButton:
         icon: "play-outline"
+        on_release:
+            root.StartPressed()
+            app.root.ids.manager.current = "training"
     
     MDIconButton:
         icon: "delete-outline"
+        on_release: app.root.ids.MySets.DeletePressed(root)

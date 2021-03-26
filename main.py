@@ -10,6 +10,7 @@ from os.path import isfile, join
 import os
 import shutil
 
+from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivy.properties import ObjectProperty, StringProperty
@@ -28,9 +29,10 @@ Sets = glob(os.path.join('Sets', "*", ""))
 
 for i in range(len(Sets)):
     Sets[i] = Sets[i].replace('Sets', '')
-    Sets[i] = Sets[i].replace('/', '')
+    Sets[i] = Sets[i].replace("/", '')
 
 NewSets = []
+TrainingText = ''
 
 class Manager(ScreenManager):
     pass
@@ -43,6 +45,7 @@ class SetTime(Screen):
     restSeconds = ObjectProperty(None)
     exerciseName = ObjectProperty(None)
     setName = ObjectProperty(None)
+    timesLabel = StringProperty()
 
     def IncreaseNumberOfSets(self):
         try:
@@ -166,7 +169,7 @@ class SetTime(Screen):
                 for i in range(len(Names)):
                     self.file.write(f'{Names[i]}\n')
             with open(f'Sets/{self.setName.text}/{self.setName.text}trainingtext.txt', 'w') as self.file:
-                self.file.write("TrainingText")
+                self.file.write(self.timesLabel)
             NewSets.append(self.setName.text)
         except FileExistsError:
             self.setName.text = "There already is that set"
@@ -175,16 +178,22 @@ class SetTime(Screen):
         global Times, Names
         Times = [5, 4, 3, 2, 1]
         Names = ["Start"]
+        self.timesLabel = ""
 
     def AddPressed(self):
         global Times, Names
+        if self.exerciseName.text != "":
+            self.isName = True
+            self.name = self.exerciseName.text
+        else:
+            self.isName = False
         if int(self.sets.text) > 0 and (int(self.workMinutes.text) * 60 + int(self.workSeconds.text) > 0 or int(self.restMinutes.text) * 60 + int(self.restSeconds.text) > 0):
             for i in range(int(self.sets.text)):
                 for j in range(int(self.workMinutes.text) * 60 + int(self.workSeconds.text)):
                     if int(self.workMinutes.text) * 60 + int(self.workSeconds.text) > 0:
                         Times.append(int(self.workMinutes.text) * 60 + int(self.workSeconds.text) - j)
                 if int(self.workMinutes.text) * 60 + int(self.workSeconds.text) > 0:
-                    if self.exerciseName.text != "":
+                    if self.isName == True:
                         Names.append(self.exerciseName.text)
                         self.exerciseName.text = ""
                     else:
@@ -194,6 +203,11 @@ class SetTime(Screen):
                         Times.append(int(self.restMinutes.text) * 60 + int(self.restSeconds.text) - j)
                 if int(self.restMinutes.text) * 60 + int(self.restSeconds.text) > 0:
                     Names.append("Rest")
+            if self.isName == True:
+                print("wad")
+                self.timesLabel += f"{self.sets.text}x {self.name}: {self.workMinutes.text}:{self.workSeconds.text} Rest: {self.restMinutes.text}:{self.restSeconds.text}\n"
+            else:
+                self.timesLabel += f"{self.sets.text}x Work: {self.workMinutes.text}:{self.workSeconds.text} Rest: {self.restMinutes.text}:{self.restSeconds.text}\n"
 
 class Training(Screen):
     seconds = StringProperty()
@@ -247,7 +261,6 @@ class Training(Screen):
 
 class MySets(Screen):
     def __init__(self, **kwargs):
-        global Sets
         self.setsList = ObjectProperty(None)
         Clock.schedule_once(self.MakeSetsList)
         super(MySets, self).__init__(**kwargs)
@@ -260,7 +273,7 @@ class MySets(Screen):
         for i in range(len(NewSets)):
             self.setsList.add_widget(
                 MDExpansionPanel(
-                    content=ExpansionPanelContent(),
+                    content=ExpansionPanelContent(f"{NewSets[i]}"),
                     panel_cls=MDExpansionPanelOneLine(
                         text=f"{NewSets[i]}"
                     )
@@ -269,18 +282,48 @@ class MySets(Screen):
         NewSets = []
 
     def MakeSetsList(self, dt):
+        global Sets
         for i in range(len(Sets)):
             self.setsList.add_widget(
                 MDExpansionPanel(
-                    content=ExpansionPanelContent(),
+                    content=ExpansionPanelContent(f"{Sets[i]}"),
                     panel_cls=MDExpansionPanelOneLine(
                         text=f"{Sets[i]}"
                     )
                 )
             )
+        
+    def DeletePressed(self, content):
+        global Sets
+        self.setsList.remove_widget(content.parent)
+        Sets.remove(content.parent.panel_cls.text)
+        shutil.rmtree(f'Sets/{content.parent.panel_cls.text}')
+        print(Sets)
 
-class ExpansionPanelContent(MDBoxLayout):
-    pass
+class ExpansionPanelContent(GridLayout):
+    trainingText = StringProperty()
+
+    def __init__(self, timesLabel):
+        self.timesLabel = timesLabel
+        with open(f"Sets\{self.timesLabel}\{self.timesLabel}trainingtext.txt", 'r') as self.file:
+            self.trainingText = self.file.read()
+        print(self.trainingText)
+        super(ExpansionPanelContent, self).__init__()
+    
+    def StartPressed(self):
+        global Times, Names
+        Times = []
+        Names = []
+        with open(f"Sets\{self.timesLabel}\{self.timesLabel}.txt", 'r') as self.file:
+            self.line = self.file.readline()
+            while self.line:
+                Times.append(int(self.line.strip('\n')))
+                self.line = self.file.readline()
+        with open(f"Sets\{self.timesLabel}\{self.timesLabel}names.txt", 'r') as self.file:
+            self.line = self.file.readline()
+            while self.line:
+                Names.append(self.line.strip('\n'))
+                self.line = self.file.readline()
 
 class SportTimerMD(MDApp):
     def build(self):
