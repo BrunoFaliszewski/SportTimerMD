@@ -305,7 +305,7 @@ class ExpansionPanelContent(GridLayout):
 
     def __init__(self, timesLabel):
         self.timesLabel = timesLabel
-        with open(f"Sets\{self.timesLabel}\{self.timesLabel}trainingtext.txt", 'r') as self.file:
+        with open(f"Sets/{self.timesLabel}/{self.timesLabel}trainingtext.txt", 'r') as self.file:
             self.trainingText = self.file.read()
         print(self.trainingText)
         super(ExpansionPanelContent, self).__init__()
@@ -314,12 +314,12 @@ class ExpansionPanelContent(GridLayout):
         global Times, Names
         Times = []
         Names = []
-        with open(f"Sets\{self.timesLabel}\{self.timesLabel}.txt", 'r') as self.file:
+        with open(f"Sets/{self.timesLabel}/{self.timesLabel}.txt", 'r') as self.file:
             self.line = self.file.readline()
             while self.line:
                 Times.append(int(self.line.strip('\n')))
                 self.line = self.file.readline()
-        with open(f"Sets\{self.timesLabel}\{self.timesLabel}names.txt", 'r') as self.file:
+        with open(f"Sets/{self.timesLabel}/{self.timesLabel}names.txt", 'r') as self.file:
             self.line = self.file.readline()
             while self.line:
                 Names.append(self.line.strip('\n'))
