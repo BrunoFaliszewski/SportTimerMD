@@ -4,6 +4,7 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.clock import Clock
 from kivy.core.audio import SoundLoader
 
+import inspect
 from glob import glob
 from os import listdir
 from os.path import isfile, join
@@ -29,7 +30,7 @@ Sets = glob(os.path.join('Sets', "*", ""))
 
 for i in range(len(Sets)):
     Sets[i] = Sets[i].replace('Sets', '')
-    Sets[i] = Sets[i].replace("/", '')
+    Sets[i] = Sets[i].replace("\\", '')
 
 NewSets = []
 TrainingText = ''
@@ -212,6 +213,7 @@ class SetTime(Screen):
 class Training(Screen):
     seconds = StringProperty()
     names = StringProperty()
+    icon = StringProperty()
     oneSound = SoundLoader.load('Sounds/sone.wav')
     twoSound = SoundLoader.load('Sounds/stwo.wav')
     threeSound = SoundLoader.load('Sounds/sthree.wav')
@@ -219,9 +221,11 @@ class Training(Screen):
     restSound = SoundLoader.load('Sounds/srest.wav')
     finishSound = SoundLoader.load('Sounds/sfinish.wav')
     isFirst = False
+
     def on_pre_enter(self):
         self.secondsnum = 0
         self.namesnum = 0
+        self.icon = "pause"
         self.schedule = Clock.schedule_interval(self.updatelabel, 1)
 
     def on_leave(self):
@@ -255,9 +259,42 @@ class Training(Screen):
                 self.finishSound.play()
                 self.isFirst = False
             self.names = ""
-            
+    
+    def IconPressed(self):
+        if self.icon == "pause":
+            self.schedule.cancel()
+            self.icon = "play"
+        elif self.icon == "play":
+            self.schedule()
+            self.icon = "pause"
+
     def BackPressed(self):
         pass
+
+class ExpansionPanelContent(GridLayout):
+    trainingText = StringProperty()
+
+    def __init__(self, timesLabel):
+        self.timesLabel = timesLabel
+        with open(f"Sets/{self.timesLabel}/{self.timesLabel}trainingtext.txt", 'r') as self.file:
+            self.trainingText = self.file.read()
+        print(self.trainingText)
+        super(ExpansionPanelContent, self).__init__()
+    
+    def StartPressed(self):
+        global Times, Names
+        Times = []
+        Names = []
+        with open(f"Sets/{self.timesLabel}/{self.timesLabel}.txt", 'r') as self.file:
+            self.line = self.file.readline()
+            while self.line:
+                Times.append(int(self.line.strip('\n')))
+                self.line = self.file.readline()
+        with open(f"Sets/{self.timesLabel}/{self.timesLabel}names.txt", 'r') as self.file:
+            self.line = self.file.readline()
+            while self.line:
+                Names.append(self.line.strip('\n'))
+                self.line = self.file.readline()
 
 class MySets(Screen):
     def __init__(self, **kwargs):
@@ -299,31 +336,6 @@ class MySets(Screen):
         Sets.remove(content.parent.panel_cls.text)
         shutil.rmtree(f'Sets/{content.parent.panel_cls.text}')
         print(Sets)
-
-class ExpansionPanelContent(GridLayout):
-    trainingText = StringProperty()
-
-    def __init__(self, timesLabel):
-        self.timesLabel = timesLabel
-        with open(f"Sets/{self.timesLabel}/{self.timesLabel}trainingtext.txt", 'r') as self.file:
-            self.trainingText = self.file.read()
-        print(self.trainingText)
-        super(ExpansionPanelContent, self).__init__()
-    
-    def StartPressed(self):
-        global Times, Names
-        Times = []
-        Names = []
-        with open(f"Sets/{self.timesLabel}/{self.timesLabel}.txt", 'r') as self.file:
-            self.line = self.file.readline()
-            while self.line:
-                Times.append(int(self.line.strip('\n')))
-                self.line = self.file.readline()
-        with open(f"Sets/{self.timesLabel}/{self.timesLabel}names.txt", 'r') as self.file:
-            self.line = self.file.readline()
-            while self.line:
-                Names.append(self.line.strip('\n'))
-                self.line = self.file.readline()
 
 class SportTimerMD(MDApp):
     def build(self):

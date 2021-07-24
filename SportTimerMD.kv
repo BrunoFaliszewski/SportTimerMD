@@ -196,9 +196,22 @@ NavigationLayout:
 
                 MDLabel:
                     text: root.ids.Training.names
+                    halign: "center"
                 
                 MDLabel:
                     text: root.ids.Training.seconds
+                    font_size: 200
+                    halign: "center"
+                
+                ScrollView:
+                    MDList:
+                        id: TimesTable
+
+                FloatLayout:
+                    MDIconButton:
+                        icon: root.ids.Training.icon
+                        pos: root.ids.Training.width - self.width - 10, 10
+                        on_release: root.ids.Training.IconPressed()
         
         MySets:
             id: MySets
@@ -239,7 +252,9 @@ NavigationLayout:
                             manager.transition.direction = "right"
 
 <ExpansionPanelContent>
-    rows: 1
+    cols: 3
+    size_hint_y: None
+    height: self.minimum_height
 
     MDLabel:
         text: root.trainingText
